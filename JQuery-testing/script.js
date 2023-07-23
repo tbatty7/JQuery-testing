@@ -6,7 +6,8 @@ $(document).ready(function(){
         $.get("https://pokeapi.co/api/v2/pokemon", function(data, status){
             if (status === "success") {
                 let names = data.results.map(pokemon => pokemon.name);
-                $("#test").text(names.join(' - '));
+                const generatedNameTags = names.map(name => "<h2>" + name + "</h2>")
+                $("#test").html(generatedNameTags);
             } else {
                 $("#test").text(status);
             }
