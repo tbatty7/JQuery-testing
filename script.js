@@ -1,6 +1,6 @@
 $(document).ready(function(){
     $("#btn1").click(function(){
-        alert("Text: " + $("#test").text());
+        alert("Text: " + $("#pokedex").text());
     });
     $("#btn2").click(function(){
         $.get("https://pokeapi.co/api/v2/pokemon", async function(data, status){
@@ -17,21 +17,21 @@ $(document).ready(function(){
                             pokemonReference.imageUrl = imageUrl;
                             pokemonImageList.push(pokemonReference);
                         } else {
-                            $("#test").text("single pokemon call failed with --" + status);
+                            $("#pokedex").text("single pokemon call failed with --" + status);
                         }
                     });
                 }
 
                 const generatedNameTags = pokemonImageList.map(pokemon => {
                     const name = pokemon.name;
-                    return "<p>"+
+                    return "<div style='width: 300px; display: contents'>"+
                         "<button id='"+ name + "'>" + name + "</button>"+
-                        "<img src='" + pokemon.imageUrl + "' alt='pokemon image' id='image-" + name + "' width='50' height='50' >"+
-                        "</p>";
+                        "<img src='" + pokemon.imageUrl + "' alt='pokemon image' id='image-" + name + "' width='200' height='200' >"+
+                        "</div>";
                 })
-                $("#test").html(generatedNameTags);
+                $("#pokedex").html(generatedNameTags);
             } else {
-                $("#test").text(status);
+                $("#pokedex").text(status);
             }
         });
     });
