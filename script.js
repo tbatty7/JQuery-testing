@@ -24,8 +24,8 @@ $(document).ready(function(){
 
                 const generatedNameTags = pokemonImageList.map(pokemon => {
                     const name = pokemon.name;
-                    return "<div style='width: 300px; display: contents'>"+
-                        "<button id='"+ name + "'>" + name + "</button>"+
+                    return "<div style='width: 300px; display: inline-block;'>"+
+                        "<button style='font-size: xx-large' id='"+ name + "'>" + name + "</button>"+
                         "<img src='" + pokemon.imageUrl + "' alt='pokemon image' id='image-" + name + "' width='200' height='200' >"+
                         "</div>";
                 })
