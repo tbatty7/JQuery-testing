@@ -12,7 +12,8 @@ $(document).ready(function(){
                     const pokemonReference = {name};
                     await $.get(`https://pokeapi.co/api/v2/pokemon/${name}`, function (data, status) {
                         if (status === "success") {
-                            const imageUrl = data.sprites.front_default;
+                            // console.log(data.sprites.versions['generation-v']['black-white'].animated.front_default);
+                            const imageUrl = data.sprites.versions['generation-v']['black-white'].animated.front_default;
                             console.log(imageUrl);
                             pokemonReference.imageUrl = imageUrl;
                             pokemonImageList.push(pokemonReference);
