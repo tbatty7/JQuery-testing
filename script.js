@@ -2,20 +2,22 @@ $(document).ready(function(){
     $("#btn1").click(function(){
         alert("Text: " + $("#pokedex").text());
     });
+
+    let pokedexUrl = "https://pokeapi.co/api/v2/pokemon";
+
     $("#btn2").click(function(){
-        $.get("https://pokeapi.co/api/v2/pokemon", async function(data, status){
+        $.get(pokedexUrl, async function(data, status){
             if (status === "success") {
                 const pokemonList = data.results;
+                pokedexUrl = data.next;
                 let pokemonImageList = [];
                 for ( pokemon of pokemonList) {
                     const name = pokemon.name;
                     const pokemonReference = {name};
                     await $.get(`https://pokeapi.co/api/v2/pokemon/${name}`, function (data, status) {
                         if (status === "success") {
-                            // console.log(data.sprites.versions['generation-v']['black-white'].animated.front_default);
-                            const imageUrl = data.sprites.versions['generation-v']['black-white'].animated.front_default;
-                            console.log(imageUrl);
-                            pokemonReference.imageUrl = imageUrl;
+                            const generation5Sprites = data.sprites.versions['generation-v']['black-white'];
+                            pokemonReference.imageUrl = generation5Sprites.animated.front_default;
                             pokemonImageList.push(pokemonReference);
                         } else {
                             $("#pokedex").text("single pokemon call failed with --" + status);
