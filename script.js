@@ -2,8 +2,6 @@ $(document).ready(function(){
     $("#btn1").click(function(){
         alert("Text: " + $("#pokedex").text());
     });
-
-    $("#btn2").click(getPokemon);
 });
 
 let pokedexUrl = "https://pokeapi.co/api/v2/pokemon";
