@@ -28,11 +28,14 @@ $(document).ready(function(){
                 const generatedNameTags = pokemonImageList.map(pokemon => {
                     const name = pokemon.name;
                     const pokemonContainer = document.createElement('div');
-                    pokemonContainer.innerHTML = "<button style='font-size: xx-large' id='"+ name + "'>" + name + "</button>"+
-                        "<img src='" + pokemon.imageUrl + "' alt='pokemon image' id='image-" + name + "' width='200' height='200' >";
-                    pokemonContainer.setAttribute('style', 'width: 200px; display: inline-block; margin: 5px; background-color: cornflowerblue; border-radius: 30px;')
+                    const pokemonButton = createPokemonButton(name);
+                    const pokemonImage = createPokemonImage(pokemon);
+                    pokemonContainer.appendChild(pokemonButton);
+                    pokemonContainer.appendChild(pokemonImage);
+                    pokemonContainer.setAttribute('style', 'width: 200px; display: inline-block; '+
+                        'margin: 5px; background-color: cornflowerblue; border-radius: 30px;');
                     return pokemonContainer
-                })
+                });
                 $("#pokedex").html(generatedNameTags);
             } else {
                 $("#pokedex").text(status);
@@ -41,3 +44,23 @@ $(document).ready(function(){
     });
 
 });
+
+function createPokemonButton(name) {
+    const pokemonButton = document.createElement("button");
+    pokemonButton.setAttribute('style', 'font-size: xx-large');
+    pokemonButton.setAttribute('alt', name);
+    pokemonButton.innerHTML = name;
+    pokemonButton.onclick = () => {
+        console.log(name)
+    };
+    return pokemonButton;
+}
+
+function createPokemonImage(pokemon) {
+    const pokemonImage = document.createElement('img');
+    pokemonImage.setAttribute('src', pokemon.imageUrl);
+    pokemonImage.setAttribute('alt', 'pokemon image');
+    pokemonImage.setAttribute('width', '200');
+    pokemonImage.setAttribute('height', '200');
+    return pokemonImage;
+}
