@@ -28,8 +28,8 @@ $(document).ready(function(){
                 const generatedNameTags = pokemonImageList.map(pokemon => {
                     const name = pokemon.name;
                     const pokemonContainer = document.createElement('div');
-                    const pokemonButton = createPokemonButton(name);
                     const pokemonImage = createPokemonImage(pokemon);
+                    const pokemonButton = createPokemonButton(name, pokemonImage);
                     pokemonContainer.appendChild(pokemonButton);
                     pokemonContainer.appendChild(pokemonImage);
                     pokemonContainer.setAttribute('style', 'width: 200px; display: inline-block; '+
@@ -45,13 +45,14 @@ $(document).ready(function(){
 
 });
 
-function createPokemonButton(name) {
+function createPokemonButton(name, pokemonImage) {
     const pokemonButton = document.createElement("button");
     pokemonButton.setAttribute('style', 'font-size: xx-large');
     pokemonButton.setAttribute('alt', name);
     pokemonButton.innerHTML = name;
     pokemonButton.onclick = () => {
-        console.log(name)
+        let pokemonOne = document.getElementById('pokemonOne');
+        pokemonOne.appendChild(pokemonImage)
     };
     return pokemonButton;
 }
