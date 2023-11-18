@@ -1,31 +1,28 @@
-function getUrlForNextTwentyPokemon(data) {
-    return data.next;
-}
-
-function getPokemon() {
-    return function () {
-        $.get(pokedexUrl, async function (data, status) {
-            if (status === "success") {
-                pokedexUrl = getUrlForNextTwentyPokemon(data);
-                await displayPokemonList(data);
-            } else {
-                $("#pokedex").text(status);
-            }
-        });
-    };
-}
-
 $(document).ready(function(){
     $("#btn1").click(function(){
         alert("Text: " + $("#pokedex").text());
     });
 
-
-
-    $("#btn2").click(getPokemon());
-
+    $("#btn2").click(getPokemon);
 });
+
 let pokedexUrl = "https://pokeapi.co/api/v2/pokemon";
+
+function getPokemon() {
+    $.get(pokedexUrl, async function (data, status) {
+        if (status === "success") {
+            pokedexUrl = getUrlForNextTwentyPokemon(data);
+            await displayPokemonList(data);
+        } else {
+            $("#pokedex").text(status);
+        }
+    });
+}
+
+function getUrlForNextTwentyPokemon(data) {
+    return data.next;
+}
+
 function extractImageUrl(data) {
     const generation5Sprites = data.sprites.versions['generation-v']['black-white'];
     return generation5Sprites.animated.front_default;
