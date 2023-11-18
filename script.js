@@ -14,7 +14,7 @@ $(document).ready(function(){
                 for ( pokemon of pokemonList) {
                     const name = pokemon.name;
                     const pokemonReference = {name};
-                    await $.get(`https://pokeapi.co/api/v2/pokemon/${name}`, function (data, status) {
+                    await $.get(pokemon.url, function (data, status) {
                         if (status === "success") {
                             const generation5Sprites = data.sprites.versions['generation-v']['black-white'];
                             pokemonReference.imageUrl = generation5Sprites.animated.front_default;
