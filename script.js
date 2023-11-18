@@ -2,15 +2,9 @@ function getUrlForNextTwentyPokemon(data) {
     return data.next;
 }
 
-$(document).ready(function(){
-    $("#btn1").click(function(){
-        alert("Text: " + $("#pokedex").text());
-    });
-
-    let pokedexUrl = "https://pokeapi.co/api/v2/pokemon";
-
-    $("#btn2").click(function(){
-        $.get(pokedexUrl, async function(data, status){
+function getPokemon() {
+    return function () {
+        $.get(pokedexUrl, async function (data, status) {
             if (status === "success") {
                 pokedexUrl = getUrlForNextTwentyPokemon(data);
                 await displayPokemonList(data);
@@ -18,10 +12,20 @@ $(document).ready(function(){
                 $("#pokedex").text(status);
             }
         });
+    };
+}
+
+$(document).ready(function(){
+    $("#btn1").click(function(){
+        alert("Text: " + $("#pokedex").text());
     });
 
-});
 
+
+    $("#btn2").click(getPokemon());
+
+});
+let pokedexUrl = "https://pokeapi.co/api/v2/pokemon";
 function extractImageUrl(data) {
     const generation5Sprites = data.sprites.versions['generation-v']['black-white'];
     return generation5Sprites.animated.front_default;
