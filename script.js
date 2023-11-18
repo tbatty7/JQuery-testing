@@ -1,3 +1,7 @@
+function getUrlForNextTwentyPokemon(data) {
+    return data.next;
+}
+
 $(document).ready(function(){
     $("#btn1").click(function(){
         alert("Text: " + $("#pokedex").text());
@@ -8,35 +12,8 @@ $(document).ready(function(){
     $("#btn2").click(function(){
         $.get(pokedexUrl, async function(data, status){
             if (status === "success") {
-                const pokemonList = data.results;
-                pokedexUrl = data.next;
-                let pokemonImageList = [];
-                for ( pokemon of pokemonList) {
-                    const name = pokemon.name;
-                    const pokemonReference = {name};
-                    await $.get(pokemon.url, function (data, status) {
-                        if (status === "success") {
-                            const generation5Sprites = data.sprites.versions['generation-v']['black-white'];
-                            pokemonReference.imageUrl = generation5Sprites.animated.front_default;
-                            pokemonImageList.push(pokemonReference);
-                        } else {
-                            $("#pokedex").text("single pokemon call failed with --" + status);
-                        }
-                    });
-                }
-
-                const generatedNameTags = pokemonImageList.map(pokemon => {
-                    const name = pokemon.name;
-                    const pokemonContainer = document.createElement('div');
-                    const pokemonImage = createPokemonImage(pokemon);
-                    const pokemonButton = createPokemonButton(name, pokemonImage);
-                    pokemonContainer.appendChild(pokemonButton);
-                    pokemonContainer.appendChild(pokemonImage);
-                    pokemonContainer.setAttribute('style', 'width: 200px; display: inline-block; '+
-                        'margin: 5px; background-color: cornflowerblue; border-radius: 30px;');
-                    return pokemonContainer
-                });
-                $("#pokedex").html(generatedNameTags);
+                pokedexUrl = getUrlForNextTwentyPokemon(data);
+                await displayPokemonList(data);
             } else {
                 $("#pokedex").text(status);
             }
@@ -45,6 +22,46 @@ $(document).ready(function(){
 
 });
 
+function extractImageUrl(data) {
+    const generation5Sprites = data.sprites.versions['generation-v']['black-white'];
+    return generation5Sprites.animated.front_default;
+}
+
+async function retrievePokemonImages(pokemonList) {
+    let pokemonImageList = [];
+    for (pokemon of pokemonList) {
+        const pokemonReference = {name: pokemon.name};
+        await $.get(pokemon.url, function (data, status) {
+            if (status === "success") {
+                pokemonReference.imageUrl = extractImageUrl(data);
+                pokemonImageList.push(pokemonReference);
+            } else {
+                $("#pokedex").text("single pokemon call failed with --" + status);
+            }
+        });
+    }
+    return pokemonImageList;
+}
+
+function buildHtmlForPokemonFrom(pokemonImageList) {
+    return pokemonImageList.map(pokemon => {
+        const name = pokemon.name;
+        const pokemonContainer = document.createElement('div');
+        const pokemonImage = createPokemonImage(pokemon);
+        const pokemonButton = createPokemonButton(name, pokemonImage);
+        pokemonContainer.appendChild(pokemonButton);
+        pokemonContainer.appendChild(pokemonImage);
+        pokemonContainer.setAttribute('style', 'width: 200px; display: inline-block; ' +
+            'margin: 5px; background-color: cornflowerblue; border-radius: 30px;');
+        return pokemonContainer
+    });
+}
+
+async function displayPokemonList(data) {
+    const pokemonImageList = await retrievePokemonImages(data.results);
+    const generatedNameTags = buildHtmlForPokemonFrom(pokemonImageList);
+    $("#pokedex").html(generatedNameTags);
+}
 function createPokemonButton(name, pokemonImage) {
     const pokemonButton = document.createElement("button");
     pokemonButton.setAttribute('style', 'font-size: xx-large');
