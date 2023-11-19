@@ -50,7 +50,7 @@ function buildHtmlForPokemonFrom(pokemonImageList) {
         const pokemonButton = createPokemonButton(name, pokemonImage);
         pokemonContainer.appendChild(pokemonButton);
         pokemonContainer.appendChild(pokemonImage);
-        pokemonContainer.setAttribute('style', 'width: 200px; display: inline-block; ' +
+        pokemonContainer.setAttribute('style', 'width: 250px; display: inline-block; ' +
             'margin: 5px; background-color: cornflowerblue; border-radius: 30px;');
         return pokemonContainer
     });
@@ -77,7 +77,6 @@ function createPokemonImage(pokemon) {
     const pokemonImage = document.createElement('img');
     pokemonImage.setAttribute('src', pokemon.imageUrl);
     pokemonImage.setAttribute('alt', 'pokemon image');
-    pokemonImage.setAttribute('width', '200');
     pokemonImage.setAttribute('height', '200');
     return pokemonImage;
 }
